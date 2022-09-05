@@ -11,7 +11,7 @@
 
     <div id="collection">
       {%for col in collections %}
-          <h1>{{col.name}}</h1>
+          <button hx-get="{% url 'get_tasks' col.pk%}" hx-target="#tasks">{{col.name}}</button>
       {%endfor%}
 
   </div>

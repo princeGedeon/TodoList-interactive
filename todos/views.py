@@ -9,8 +9,14 @@ from todos.models import Task
 
 
 def index(request):
-    collection=Collection.default_collection()
-    collections=Collection.objects.order_by("name")
+
+    col_slug=request.GET.get("collection")
+    if col_slug:
+        collection=get_object_or_404(Collection,slug=col_slug)
+    else:
+        collection=Collection.default_collection()
+
+    collections=Collection.objects.order_by("slug")
     tasks=collection.task_set.order_by("description")
     return render(request,"todos/index.html",context={"collections":collections,"tasks":tasks})
 
@@ -33,4 +39,5 @@ def add_task(request):
 
 def get_tasks(request,col_pk):
     collection=get_object_or_404(Collection,pk=col_pk)
-    return collection.task_set.order_by("description")
+    tasks=collection.task_set.order_by("description")
+    return render(request,"tasks.html",context={"tasks":tasks})

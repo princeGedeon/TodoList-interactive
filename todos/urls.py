@@ -7,6 +7,8 @@ from todos import views
 urlpatterns = [
     path('', index,name="home"),
     path('add_collection',views.add_collection,name="add_collection"),
-    path('add_task/',views.add_task,name="add_task")
+    path('add_task/',views.add_task,name="add_task"),
+    path("get-tasks/<int:col_pk>",views.get_tasks,name="get_tasks")
+
 
 ]
