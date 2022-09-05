@@ -1,7 +1,36 @@
 <!-- templates/index.html -->
 
-{% extends "base.html" %}
-
+{% extends "base_projet.html" %}
+{% block head%}
+<script src="https://unpkg.com/htmx.org@1.8.0"></script>
+{% endblock%}
 {% block content %}
-  <h1 class="text-3xl text-blue-900">Prince Gédéon</h1>
+  <div>
+    <h1 class="text-xl md:text-2xl xl:text-3xl text-blue-600 font-bold">TODO APP| By <span class="text-red-600">PrinceGedeon</span></h1>
+    
+
+    <div id="collection">
+      {%for col in collections %}
+          <h1>{{col.name}}</h1>
+      {%endfor%}
+
+  </div>
+
+    <form  method="POST" class="mt-4">
+      <div class="mb-6 flex gap-1">
+         {% csrf_token %}
+        <!-- <label for="default-input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Default input</label> -->
+        <input type="text" name="collection-name" id="default-input" placeholder="Ajouter une collecion" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+        <button class="px-3 py-2 rounded-md shadow-md bg-blue-400 min-w-fit" type="submit" hx-post="{%url 'add_collection'%}" hx-target="#collection" hx-swap="beforeend">Ajouter</button>
+      </div>
+    </form>
+    
+   
+
+  </div>
+  <script>
+    document.body.addEventListener("htmx:responseError",function(evt){
+      alert(evt.detail.xhr.responseText);
+    })
+  </script>
 {% endblock content %}
