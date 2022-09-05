@@ -1,14 +1,18 @@
+from glob import escape
 from django.http import HttpResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 
 # Create your views here.
 from todos.models import Collection
 
+from todos.models import Task
+
 
 def index(request):
-    collection=Collection.default_collection
+    collection=Collection.default_collection()
     collections=Collection.objects.order_by("name")
-    return render(request,"todos/index.html",context={"collections":collections})
+    tasks=collection.task_set.order_by("description")
+    return render(request,"todos/index.html",context={"collections":collections,"tasks":tasks})
 
 def add_collection(request):
     collection_name=request.POST.get('collection-name')
@@ -20,4 +24,13 @@ def add_collection(request):
 
     return HttpResponse(f"<h2>{collection_name}</h2>")
 
-    
+def add_task(request):
+    collection=Collection.default_collection()
+    descripton=request.POST.get('task-desc')
+    Task.objects.create(description=descripton,collection=collection)
+
+    return HttpResponse(f"<h2>{descripton}</h2>")
+
+def get_tasks(request,col_pk):
+    collection=get_object_or_404(Collection,pk=col_pk)
+    return collection.task_set.order_by("description")

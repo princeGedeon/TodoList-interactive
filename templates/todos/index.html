@@ -24,6 +24,25 @@
         <button class="px-3 py-2 rounded-md shadow-md bg-blue-400 min-w-fit" type="submit" hx-post="{%url 'add_collection'%}" hx-target="#collection" hx-swap="beforeend">Ajouter</button>
       </div>
     </form>
+
+     <form  method="POST" class="mt-4">
+      <div>
+        {%csrf_token%}
+        
+        <input type="text" placeholder="description" name="task-desc" id="small-input" class="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-gray-300 sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+    
+        <button class="px-3 py-2 rounded-md shadow-md bg-blue-400 min-w-fit" type="submit" hx-post="{% url 'add_task' %}" hx-target="#tasks" hx-swap="beforeend" type="submit">Ajouter</button>
+      </div>
+
+     
+    </form>
+
+    <div id="tasks">
+      {% for task in tasks%}
+          <p>{{task.description}}</p>
+      {%endfor%}
+
+    </div>
     
    
 
